@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block title %}Мои посты{{ posts.title }}{% endblock %}
+{% block side_bar %}
+    {% if request.user.is_authenticated %}
+
+        <h3><a href="{% url "logout" %}">Выйти</a></h3>
+        {% else %}
+             <li><a href="{% url "login" %}">Войти</a></li><br>
+        {% endif %}
+{% endblock %}
+
+{% block content %}
+{% for pub in posts %}<br>
+    <h3>Заголовок: {{ pub.title }}</h3>
+    <h3>Автор: {{ pub.author }}</h3>
+    <h4>дата публикации: {{ pub.created }}<br></h4>
+     <p> Текст: {{ pub.text|truncatewords:10 }}<br>
+    </p>
+{% endfor %}
+{% endblock %}
