@@ -28,3 +28,5 @@ class PostsListView(LoginRequiredMixin, ListView):
         u = self.request.user
         qs = super().get_queryset()
         return qs.filter(author=u)
+
+

@@ -22,9 +22,11 @@
         <h4>дата публикации: {{ all.created }}<br></h4>
         <p>Текст: {{ all.text|truncatewords:10 }}<br></p>
         <form action="" method="post">
-            <p><input type="submit" value="Подписаться">
+           <p><input type="submit" value="Подписаться">
         </form>
-          <input type="reset" value="Отписаться"></p>
+        <form action="" method="post">
+           <input type="submit" value="Отписаться"></p>
+        </form>
     {% endfor %}
     </div>
 
