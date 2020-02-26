@@ -11,7 +11,7 @@ from blogs.views import PostsListView, SubscribeListView
 
 urlpatterns = [
     url('^list/', PostsListView.as_view(), name='list'),#<str:slug>/
-    url(r'^subscribe/', SubscribeListView.as_view(), name='get')
+    url(r'^subscribe/', SubscribeListView.as_view(), name='subscribe')
     #url('^subscribe/', SubscribeListViewsubs.as_view(), name='subscribe') MyView.as_view()
 
 #    url('^create/$', PostCreateView.as_view(), name='create'),

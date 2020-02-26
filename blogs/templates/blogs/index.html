@@ -24,7 +24,7 @@
         <h4>дата публикации: {{ all.created }}<br></h4>
         <p>Текст: {{ all.text|truncatewords:10 }}<br></p>
         <form action="/subscribe" method="get">
-           <p><button value="{{ all.0 }}" name="id">Подписаться</button>
+           <p><button value="{{ all.author }}" name="author">Подписаться</button>
         </form>
         <form action="" method="post">
             {% csrf_token %}

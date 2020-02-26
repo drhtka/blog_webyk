@@ -41,6 +41,12 @@ class SubscribeListView(LoginRequiredMixin, TemplateView):
     login_url = 'subscribe'
     print('subsc')
     def get(self, request):
-        subs = BlogPosts.objects.get(author=request.user)
-        subs.save()
+        print('req')
+        subs = BlogPosts.objects.filter(author=True)
+        print(subs)
+        for object in subs:
+            object.author = False
+            print(object)
+            object.save()
+        #context={"subs":subs}
         return redirect(request, 'blogs/subscribe.html')
