@@ -41,6 +41,6 @@ class SubscribeListView(LoginRequiredMixin, TemplateView):
     login_url = 'subscribe'
     print('subsc')
     def get(self, request):
-        print('hello')
-        print(request)
-        return HttpResponse('result')
+        subs = BlogPosts.objects.get(author=request.user)
+        subs.save()
+        return redirect(request, 'blogs/subscribe.html')
