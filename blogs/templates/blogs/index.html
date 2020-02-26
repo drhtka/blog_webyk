@@ -1,5 +1,6 @@
 
 {% extends "base.html" %}
+{% load static %}
 
 {% block title %}Все посты{{ posts.title }}{% endblock %}
 
@@ -15,17 +16,21 @@
 
 
 {% block content %}
+    <a href="http://127.0.0.1:8000/list/">Мой блог</a>
     <div id="action-list">
     {% for all in all_posts %}
         <h3>Заголовок: {{ all.title }}</h3>
         <h3>Автор: {{ all.author }}</h3>
         <h4>дата публикации: {{ all.created }}<br></h4>
         <p>Текст: {{ all.text|truncatewords:10 }}<br></p>
-        <form action="" method="post">
-           <p><input type="submit" value="Подписаться">
+        <form action="/subscribe" method="get">
+           <p><button value="{{ all.0 }}" name="id">Подписаться</button>
         </form>
         <form action="" method="post">
-           <input type="submit" value="Отписаться"></p>
+            {% csrf_token %}
+            {{ form.as_p }}
+           <button value="" >Отписаться</button>
+          </p>
         </form>
     {% endfor %}
     </div>
