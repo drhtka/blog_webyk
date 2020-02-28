@@ -8,7 +8,7 @@
 
     {% if request.user.is_authenticated %}
 
-             <a href="{% url "logout" %}">🧛🧛Выйти</a>
+             <a href="{% url "logout" %}">Выйти</a>
         {% else %}
              <li><a href="{% url "login" %}">Войти</a></li>
         {% endif %}
@@ -24,7 +24,8 @@
         <h4>дата публикации: {{ all.created }}<br></h4>
         <p>Текст: {{ all.text|truncatewords:10 }}<br></p>
         <form action="/subscribe" method="get">
-           <p><button value="{{ all.author }}" name="author">Подписаться</button>
+        <input type="hidden" >
+           <p><button value="{{ all.author_id }}" name="id">Подписаться</button>
         </form>
         <form action="" method="post">
             {% csrf_token %}

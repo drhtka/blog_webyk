@@ -10,11 +10,14 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 
 
-class IndexTemplateView(TemplateView):
+class IndexTemplateView(LoginRequiredMixin, TemplateView):
     #  стартовая траница со всами постами всех пользователей
     def get(self, request):
         template_name = 'blogs/index.html'
         all_posts = BlogPosts.objects.all()
+        u = self.request.user
+        print(u)
+        print(all_posts)
         context = {'all_posts': all_posts}
         return render(request, template_name, context)
 
@@ -41,7 +44,20 @@ class SubscribeListView(LoginRequiredMixin, TemplateView):
     login_url = 'subscribe'
     print('subsc')
     def get(self, request):
-        print('req')
+        print('hello')
+        all_posts = BlogPosts.objects.all()
+        #print(all_posts)
+        subscribe_id = request.GET.get('id')
+
+        #print(request)
+        print(subscribe_id)
+        b = BlogPosts(subscribe=subscribe_id, author_id=1)
+        BlogPosts.objects.select_related().filter(author_id=subscribe_id).update(subscribe=subscribe_id)
+        #b.save()
+        return render(request, 'blogs/subscribe.html')
+
+
+"""        print('req')
         subs = BlogPosts.objects.filter(author=True)
         print(subs)
         for object in subs:
@@ -49,4 +65,4 @@ class SubscribeListView(LoginRequiredMixin, TemplateView):
             print(object)
             object.save()
         #context={"subs":subs}
-        return redirect(request, 'blogs/subscribe.html')
+        return redirect(request, 'blogs/subscribe.html')"""
