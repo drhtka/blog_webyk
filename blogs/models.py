@@ -18,7 +18,7 @@ class BlogPosts(models.Model):
     text = models.TextField('Текст статьи',)
     created = models.DateField('Дата создания', auto_now_add=True,)
     status = models.CharField('Состояние', max_length=10, choices=STATUS_CHOICES, default='draft')
-    subscribe = models.TextField('Подписан', blank=True, null=True)
+    subscribe = models.CharField('Подписан', max_length=30, null=True)
 
     class Meta:
         verbose_name = 'Пост'

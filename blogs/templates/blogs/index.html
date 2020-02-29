@@ -1,4 +1,3 @@
-
 {% extends "base.html" %}
 {% load static %}
 
@@ -24,7 +23,7 @@
         <h4>дата публикации: {{ all.created }}<br></h4>
         <p>Текст: {{ all.text|truncatewords:10 }}<br></p>
         <form action="/subscribe" method="get">
-        <input type="hidden" >
+        <input type="hidden" value="{{ request.user.id }}" name="idd">
            <p><button value="{{ all.author_id }}" name="id">Подписаться</button>
         </form>
         <form action="" method="post">
