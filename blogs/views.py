@@ -46,12 +46,12 @@ class SubscribeListView(LoginRequiredMixin, TemplateView):
     def get(self, request):
         print('hello')
         subscribe_idd = request.GET.get('idd')
-        print(subscribe_idd)
-        subscribe_id = request.GET.get('id')
-        print(subscribe_id)
-        b = BlogPosts(subscribe=subscribe_idd, author_id=1)
-        #print(b)
-        BlogPosts.objects.select_related().filter(author_id=subscribe_id).update(subscribe=subscribe_idd)
+        subscribe_id = int(request.GET.get('id'))
+        #all_posts = BlogPosts.objects.only('subscribe').get(id=1)
+        all_posts = BlogPosts.objects.values('subscribe')
+        print(all_posts)
+
+       # BlogPosts.objects.select_related().filter(author_id=subscribe_id).update(subscribe=subscribe_idd)
         return render(request, 'blogs/subscribe.html')
 
 
