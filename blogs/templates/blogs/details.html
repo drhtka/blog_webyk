@@ -11,6 +11,9 @@
 {% endblock %}
 
 {% block content %}
+        <p><a href="http://127.0.0.1:8000/">Главная</a></p>
+
+    <p><a href="http://127.0.0.1:8000/tapelist/">Моя лента</a></p>
 {% for pub in posts %}<br>
     <h3>Заголовок: {{ pub.title }}</h3>
     <h3>Автор: {{ pub.author }}</h3>
@@ -18,4 +21,15 @@
      <p> Текст: {{ pub.text|truncatewords:10 }}<br>
     </p>
 {% endfor %}
-{% endblock %}
+  {% endblock %}
+{% block lcontent %}
+
+        {% for list in list_entr %}
+            <h3>Заголовок лента: {{ list.0}}</h3>
+            <p> Текст  лента: {{ list.1}}</p>
+            <p> Создан  лента: {{ list.2}}</p>
+            <p> subscr  лента: {{ list.3}}</p><br>
+
+{% endfor %}
+{% endblock lcontent %}
+

@@ -16,11 +16,12 @@
 
 {% block content %}
     <a href="http://127.0.0.1:8000/list/">Мой блог</a>
+    <p><a href="http://127.0.0.1:8000/tapelist/">Моя лента</a></p>
     <div id="action-list">
     {% for all in all_posts %}
         <h3>Заголовок: {{ all.title }}</h3>
-        <h3>Автор: {{ all.author }}</h3>
-        <h4>дата публикации: {{ all.created }}<br></h4>
+        <p>Автор: {{ all.author }}</p>
+        <p>дата публикации: {{ all.created }}<br></p>
         <p>Текст: {{ all.text|truncatewords:10 }}<br></p>
         <form action="/subscribe" method="get">
         <input type="hidden" value="{{ request.user.id }}" name="idd">

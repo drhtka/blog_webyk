@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block title %}Моя лента{{ posts.title }}{% endblock %}
+{% block side_bar %}
+    {% if request.user.is_authenticated %}
+
+        <h3><a href="{% url "logout" %}">Выйти</a></h3>
+        {% else %}
+             <li><a href="{% url "login" %}">Войти</a></li><br>
+        {% endif %}
+{% endblock %}
+
+{% block content %}
+    <p><a href="http://127.0.0.1:8000/">Главная</a></p>
+    <p><a href="http://127.0.0.1:8000/list/">Мой блог</a></p>
+
+        {% for list in list_entr %}
+            <h3>Заголовок: {{ list.0}}</h3>
+            <p> Текст: {{ list.1}}</p>
+            <p> Создан: {{ list.2}}</p>
+            <p> subscr: {{ list.3}}</p><br>
+
+{% endfor %}
+{% endblock %}

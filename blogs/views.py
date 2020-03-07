@@ -30,10 +30,30 @@ class PostsListView(LoginRequiredMixin, ListView):
     template_name = 'blogs/details.html'
     login_url = 'login'
 
-    def get_queryset(self):#здесь поквазывает посты закрепленные за пользователем
+    def get_queryset(self):#здесь покaвазывает посты закрепленные за пользователем
         u = self.request.user
         qs = super().get_queryset()
         return qs.filter(author=u)
+
+class TapeListView(LoginRequiredMixin, ListView):
+
+    def get(self, request):
+        #print(self.request.user)
+        #tape users which subscribe
+        print('lenta_test')
+        ug = self.request.user.id
+        print(ug)
+        test_like = BlogPosts.objects.filter(subscribe__contains=ug).values('author_id')# фильтруем подписанных авторизированных по полю автор айди
+        print(test_like)
+        test_list = []
+        for test_likes in test_like:
+            print(test_likes['author_id'])
+            test_list.append(test_likes['author_id'])
+        print(test_list)
+        list_entr = BlogPosts.objects.filter(author_id__in=list(test_list)).values_list('title', 'text', 'created', 'status' )#.values('title')
+        print(list_entr)
+        return render(request, 'blogs/tapelist.html', {'list_entr': list_entr})
+
 
 class SubscribeListView(LoginRequiredMixin, TemplateView):
     print('hhhh')
@@ -43,24 +63,36 @@ class SubscribeListView(LoginRequiredMixin, TemplateView):
     template_name = 'blogs/subscribe.html'
     login_url = 'subscribe'
     print('subsc')
+
     def get(self, request):
         print('hello')
         subscribe_idd = request.GET.get('idd')
         subscribe_id = int(request.GET.get('id'))
-        #all_posts = BlogPosts.objects.only('subscribe').get(id=1)
-        all_posts = BlogPosts.objects.values('subscribe')
-        print(all_posts)
 
-       # BlogPosts.objects.select_related().filter(author_id=subscribe_id).update(subscribe=subscribe_idd)
+        #subs_posts = BlogPosts.objects.values('subscribe')
+        all_posts = BlogPosts.objects.only('subscribe', 'author_id').get(author_id=subscribe_idd)
+        #print(subs_posts[0]['subscribe'])
+        print(all_posts)
+        test_all=BlogPosts.objects.filter(author_id=subscribe_id).values('subscribe')#.update(field2='cool')
+        print(test_all[0]['subscribe'])
+        temp_subs = test_all[0]['subscribe']
+        temp_subs = temp_subs + ',' + subscribe_idd
+        print(temp_subs)
+        BlogPosts.objects.select_related().filter(author_id=subscribe_id).update(subscribe=temp_subs)
+
+        #testt_like = BlogPosts.objects.filter(subscribe__='2')
+        #print(testt_like)
         return render(request, 'blogs/subscribe.html')
 
 
+        #print(subs_posts)
+        #all_posts = BlogPosts.objects.only('subscribe').get(id=1)
 """        print('req')
         subs = BlogPosts.objects.filter(author=True)
         print(subs)
         for object in subs:
             object.author = False
             print(object)
-            object.save()
+            object.save() 
         #context={"subs":subs}
         return redirect(request, 'blogs/subscribe.html')"""
