@@ -21,8 +21,6 @@ class IndexTemplateView(LoginRequiredMixin, TemplateView):
         context = {'all_posts': all_posts}
         return render(request, template_name, context)
 
-
-
 class PostsListView(LoginRequiredMixin, ListView):
     #  страница блога зарегестрированного пользователя
     model = BlogPosts
@@ -84,13 +82,24 @@ class UnSubscribeListView(LoginRequiredMixin, TemplateView):
     def get(self, request):
         unsubscribe_idh = request.GET.get('iddu')# авториз юзер
         unsubscribe_id = request.GET.get('idu') # автор поста
+        print(unsubscribe_id)
+        unsub_users = BlogPosts.objects.filter(author_id=unsubscribe_id).values('subscribe')
+        print(unsub_users)
 
-        del_sub_user = BlogPosts.objects.filter(author_id=unsubscribe_id).values('subscribe')
+        for unsub_user in unsub_users:
 
-        for del_sub_users in del_sub_user:
-            del_sub_for = del_sub_users[unsubscribe_idh]
+            del_sub_for = unsub_user['subscribe']
+            print('del_sub_for')
             print(del_sub_for)
-
+            del_sub_for2 = del_sub_for.split(',')
+            print('del_sub_for2')
+            print(del_sub_for2)
+            result = ''
+            for del_sub_fors in del_sub_for2:
+                if del_sub_fors != unsubscribe_idh:
+                    result = result + ',' + del_sub_fors
+            print(result)
+            BlogPosts.objects.select_related().filter(author_id=unsubscribe_id).update(subscribe=result)
 
         return render(request, 'blogs/unsubscribe.html')
 
