@@ -48,8 +48,7 @@ class TapeListView(LoginRequiredMixin, ListView):
             #print(test_likes['author_id'])
             test_list.append(test_likes['author_id'])
         #print(test_list)
-        list_entr = BlogPosts.objects.filter(author_id__in=list(test_list)).values_list('title', 'text', 'created', 'status' )#.values('title')
-        #print(list_entr)
+        list_entr = BlogPosts.objects.filter(author_id__in=list(test_list)).values_list('title', 'text', 'created', 'author' )
         return render(request, 'blogs/tapelist.html', {'list_entr': list_entr})
 
 
@@ -82,22 +81,18 @@ class UnSubscribeListView(LoginRequiredMixin, TemplateView):
     def get(self, request):
         unsubscribe_idh = request.GET.get('iddu')# авториз юзер
         unsubscribe_id = request.GET.get('idu') # автор поста
-        print(unsubscribe_id)
         unsub_users = BlogPosts.objects.filter(author_id=unsubscribe_id).values('subscribe')
-        print(unsub_users)
 
         for unsub_user in unsub_users:
-
             del_sub_for = unsub_user['subscribe']
-            print('del_sub_for')
             print(del_sub_for)
+            print(unsub_user)
+            print('subscribe')
             del_sub_for2 = del_sub_for.split(',')
-            print('del_sub_for2')
-            print(del_sub_for2)
             result = ''
             for del_sub_fors in del_sub_for2:
                 if del_sub_fors != unsubscribe_idh:
-                    result = result + ',' + del_sub_fors
+                    result = result + '' + del_sub_fors
             print(result)
             BlogPosts.objects.select_related().filter(author_id=unsubscribe_id).update(subscribe=result)
 

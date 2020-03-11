@@ -18,7 +18,13 @@
             <h3>Заголовок: {{ list.0}}</h3>
             <p> Текст: {{ list.1}}</p>
             <p> Создан: {{ list.2}}</p>
-            <p> subscr: {{ list.3}}</p><br>
+            <p> Автор id: {{ list.3}}</p><br>
 
+        <form action="/unsubscribe" method="get">
+          <input type="hidden" value="{{ request.user.id }}" name="iddu">
+          </p>
+        <p><button value="{{ list.author_id }}" name="idu">Отписаться</button>
+        </form>
 {% endfor %}
+
 {% endblock %}
