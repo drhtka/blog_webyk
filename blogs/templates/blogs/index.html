@@ -27,11 +27,10 @@
         <input type="hidden" value="{{ request.user.id }}" name="idd">
            <p><button value="{{ all.author_id }}" name="id">Подписаться</button>
         </form>
-        <form action="" method="post">
-            {% csrf_token %}
-            {{ form.as_p }}
-           <button value="" >Отписаться</button>
+        <form action="/unsubscribe" method="get">
+          <input type="hidden" value="{{ request.user.id }}" name="iddu">
           </p>
+        <p><button value="{{ all.author_id }}" name="idu">Отписаться</button>
         </form>
     {% endfor %}
     </div>
