@@ -150,3 +150,11 @@ STATICFILES_FINDERS = (
 LOGIN_REDIRECT_URL = 'index'
 
 LOGIN_URL = '/accounts/logout/'
+
+#"""
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'drhtka@gmail.com'
+EMAIL_HOST_PASSWORD = 'drhtka2013'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+#""" # для отправвки почты

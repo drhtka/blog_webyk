@@ -3,12 +3,11 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.views.generic import ListView, TemplateView, View
+from django.views.generic.edit import CreateView
 #from django.views.generic.base import View
-
+from blogs.forms import BlogPostsForms
 from blogs.models import BlogPosts
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth.decorators import login_required
-
 
 class IndexTemplateView(LoginRequiredMixin, TemplateView):
     #  стартовая траница со всами постами всех пользователей
@@ -85,6 +84,20 @@ class UnSubscribeListView(LoginRequiredMixin, TemplateView):
             BlogPosts.objects.select_related().filter(author_id=unsubscribe_id).update(subscribe=result)
 
         return render(request, 'blogs/unsubscribe.html')
+
+class SendPost(CreateView):
+    model = BlogPosts
+    form_class = BlogPostsForms
+    template_name = 'blogs/details.html'
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        form.save()  # проверка на валидность
+        return redirect('/sendpost/')
+
+    def succes_url(self):
+        return redirect('/sendpost/')  # куда редиректить когда мы сделам что либо на наш url
+
 
 """     print('uns_test_uns')   
         print('uns_test')
