@@ -36,21 +36,14 @@ class PostsListView(LoginRequiredMixin, ListView):
 class TapeListView(LoginRequiredMixin, ListView):
 
     def get(self, request):
-        #print(self.request.user)
         #tape users which subscribe
-        #print('lenta_test')
         ug = self.request.user.id
-        #print(ug)
         test_like = BlogPosts.objects.filter(subscribe__contains=ug).values('author_id')# фильтруем подписанных авторизированных по полю автор айди
-        #print(test_like)
         test_list = []
         for test_likes in test_like:
-            #print(test_likes['author_id'])
             test_list.append(test_likes['author_id'])
-        #print(test_list)
-        list_entr = BlogPosts.objects.filter(author_id__in=list(test_list)).values_list('title', 'text', 'created', 'author' )
+        list_entr = BlogPosts.objects.filter(author_id__in=list(test_list)).values_list('title', 'text', 'created', 'author__first_name' )
         return render(request, 'blogs/tapelist.html', {'list_entr': list_entr})
-
 
 class SubscribeListView(LoginRequiredMixin, TemplateView):
     # подписка отписка на блоги пользователей
@@ -64,16 +57,11 @@ class SubscribeListView(LoginRequiredMixin, TemplateView):
         subscribe_idd = request.GET.get('idd')
         subscribe_id = int(request.GET.get('id'))
 
-        #subs_posts = BlogPosts.objects.values('subscribe')
-        #all_posts = BlogPosts.objects.only('subscribe', 'author_id').get(author_id=subscribe_idd)
-        #print(subs_posts[0]['subscribe'])
-        #print(all_posts)
         test_all=BlogPosts.objects.filter(author_id=subscribe_id).values('subscribe')
         temp_subs = test_all[0]['subscribe']
         temp_subs = temp_subs + ',' + subscribe_idd
         BlogPosts.objects.select_related().filter(author_id=subscribe_id).update(subscribe=temp_subs)
         return render(request, 'blogs/subscribe.html')
-
 
 class UnSubscribeListView(LoginRequiredMixin, TemplateView):
     model = BlogPosts

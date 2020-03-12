@@ -2,6 +2,8 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+DEFAULT_SAMMICH = 0
+
 class BlogPosts(models.Model):
     """Посты блога
     """
@@ -18,7 +20,7 @@ class BlogPosts(models.Model):
     text = models.TextField('Текст статьи',)
     created = models.DateField('Дата создания', auto_now_add=True,)
     status = models.CharField('Состояние', max_length=10, choices=STATUS_CHOICES, default='draft')
-    subscribe = models.CharField('Подписан', max_length=30, null=True, blank=None)
+    subscribe = models.CharField('Подписан', max_length=30, null=True, blank=None, default=DEFAULT_SAMMICH)
 
     class Meta:
         verbose_name = 'Пост'
