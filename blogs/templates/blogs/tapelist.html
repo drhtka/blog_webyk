@@ -19,9 +19,8 @@
             <p> Текст: {{ list.1}}</p>
             <p> Создан: {{ list.2}}</p>
             <p> Автор: {{ list.3}}</p>
-            <p><input type="button" value="прочитано"></p>
-            <p><input type="checkbox" name="a" value=""> prochitano</p>
-            <p><input type="submit" value="prochitano"></p><br>
+            <a><a href="readpost?id={{ request.user.id }}&post={{ list.4 }}"><input type="submit" name="idd" value="прочитано"></a></p>
+            {% comment %}<p><input type="submit" value="прочитано"></p><br>{% endcomment %}
 {% endfor %}
 
 {% endblock %}

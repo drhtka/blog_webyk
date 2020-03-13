@@ -21,15 +21,19 @@
      <p> Текст: {{ pub.text|truncatewords:10 }}<br>
     </p>
 {% endfor %}
+    {% if sent %}
+    <h1>E-mail succesfully sent</h1>
+    <p>"{{ post.title }}" был успешно отправлен по электронной почте</p>
+
+    {%  else %}
+    <h1>Поделиться"{{ post.title }}" на e-mail</h1>
+        <form action="" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="поделиться ">
+    </form>
+     {% endif %}
+
   {% endblock %}
-{% block lcontent %}
 
-        {% for list in list_entr %}
-            <h3>Заголовок лента: {{ list.0}}</h3>
-            <p> Текст  лента: {{ list.1}}</p>
-            <p> Создан  лента: {{ list.2}}</p>
-            <p> subscr  лента: {{ list.3}}</p><br>
-
-{% endfor %}
-{% endblock lcontent %}
 

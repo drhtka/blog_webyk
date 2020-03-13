@@ -21,6 +21,7 @@ class BlogPosts(models.Model):
     created = models.DateField('Дата создания', auto_now_add=True,)
     status = models.CharField('Состояние', max_length=10, choices=STATUS_CHOICES, default='draft')
     subscribe = models.CharField('Подписан', max_length=30, null=True, blank=None, default=DEFAULT_SAMMICH)
+    read_posts = models.CharField(max_length=30, null=True, blank=None)
 
     class Meta:
         verbose_name = 'Пост'
@@ -31,3 +32,5 @@ class BlogPosts(models.Model):
     def __str__(self):
         #return "Посты блога %s" % self.title
         return self.title
+
+#class ReadPosts(models.Model):

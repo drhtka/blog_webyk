@@ -41,7 +41,7 @@ class TapeListView(LoginRequiredMixin, ListView):
         test_list = []
         for test_likes in test_like:
             test_list.append(test_likes['author_id'])
-        list_entr = BlogPosts.objects.filter(author_id__in=list(test_list)).values_list('title', 'text', 'created', 'author__first_name' )
+        list_entr = BlogPosts.objects.filter(author_id__in=list(test_list)).values_list('title', 'text', 'created', 'author__first_name', 'id')
         return render(request, 'blogs/tapelist.html', {'list_entr': list_entr})
 
 class SubscribeListView(LoginRequiredMixin, TemplateView):
@@ -79,19 +79,27 @@ class UnSubscribeListView(LoginRequiredMixin, TemplateView):
             result = ''
             for del_sub_fors in del_sub_for2:
                 if del_sub_fors != unsubscribe_idh:
-                    result = result + '' + del_sub_fors
+                    result = result + ',' + del_sub_fors
             print(result)
             BlogPosts.objects.select_related().filter(author_id=unsubscribe_id).update(subscribe=result)
 
         return render(request, 'blogs/unsubscribe.html')
 
-class SendPost(CreateView):
+class ReadPostTemplView(LoginRequiredMixin, TemplateView):
+
+    def get(self, request):
+        id_request_user = request.GET.get('id')# авториз юзер
+        id_request_post = request.GET.get('idd')  # авториз юзер
+        print(id_request_post)
+        print(id_request_user)
+
+"""class SendPost(CreateView):
     model = BlogPosts
     form_class = BlogPostsForms
     template_name = 'blogs/details.html'
 
     def form_valid(self, form):
-        form.instance.user = self.request.user
+        #post =
         form.save()  # проверка на валидность
         return redirect('/sendpost/')
 
@@ -99,7 +107,7 @@ class SendPost(CreateView):
         return redirect('/sendpost/')  # куда редиректить когда мы сделам что либо на наш url
 
 
-"""     print('uns_test_uns')   
+     print('uns_test_uns')   
         print('uns_test')
         print(unsubscribe_idd)
         print(request.GET)
