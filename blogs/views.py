@@ -86,12 +86,26 @@ class UnSubscribeListView(LoginRequiredMixin, TemplateView):
         return render(request, 'blogs/unsubscribe.html')
 
 class ReadPostTemplView(LoginRequiredMixin, TemplateView):
+    model = BlogPosts
+    login_url = 'readpost'
 
     def get(self, request):
         id_request_user = request.GET.get('id')# авториз юзер
-        id_request_post = request.GET.get('idd')  # авториз юзер
-        print(id_request_post)
-        print(id_request_user)
+        id_request_post = request.GET.get('post')  # номер поста который помечаем
+
+        read_post = BlogPosts.objects.filter(id=id_request_post).values('read_posts')
+        print('11111')
+        result2 = ''
+        #for unsub_user in unsub_users:
+        #    del_sub_for = unsub_user['read_posts']
+        print(read_post)
+        #update_read_posts = read_post[0]['read_posts'].split(',')
+        #print(update_read_posts)
+        result2 = read_post[0]['read_posts'] + ',' + id_request_user
+        #BlogPosts.objects.select_related().filter(id=id_request_post).update(read_posts=result2)
+        print_read=BlogPosts.objects.select_related().filter(id=id_request_post).update(read_posts=result2)
+        print(print_read)
+        return redirect('/tapelist')
 
 """class SendPost(CreateView):
     model = BlogPosts
