@@ -1,4 +1,6 @@
 {% extends 'base.html' %}
+{% load my_tags %}
+
 
 {% block title %}Моя лента{{ posts.title }}{% endblock %}
 {% block side_bar %}
@@ -21,6 +23,7 @@
             <p> Автор: {{ list.3}}</p>
             <span>прочитатать?: </span><a href="/readpost?post={{ list.4 }}&id={{ request.user.id }}"><input type="checkbox" name="idd" value="прочитано"></a></p>
             {% comment %}<p><input type="submit" value="прочитано"></p><br>{% endcomment %}
-{% endfor %}
+            <p>{{ list.5|split:"," }}</p>
+        {% endfor %}
 
 {% endblock %}

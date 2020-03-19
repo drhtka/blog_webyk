@@ -41,7 +41,7 @@ class TapeListView(LoginRequiredMixin, ListView):
         test_list = []
         for test_likes in test_like:
             test_list.append(test_likes['author_id'])
-        list_entr = BlogPosts.objects.filter(author_id__in=list(test_list)).values_list('title', 'text', 'created', 'author__first_name', 'id')
+        list_entr = BlogPosts.objects.filter(author_id__in=list(test_list)).values_list('title', 'text', 'created', 'author__first_name', 'id', 'read_posts')
         return render(request, 'blogs/tapelist.html', {'list_entr': list_entr})
 
 class SubscribeListView(LoginRequiredMixin, TemplateView):
