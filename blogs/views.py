@@ -42,10 +42,12 @@ class TapeListView(LoginRequiredMixin, ListView):
         for test_likes in test_like:
             test_list.append(test_likes['author_id'])
         list_entr = BlogPosts.objects.filter(author_id__in=list(test_list)).values_list('title', 'text', 'created', 'author__first_name', 'id', 'read_posts')
+        print(list_entr)
+
         return render(request, 'blogs/tapelist.html', {'list_entr': list_entr})
 
 class SubscribeListView(LoginRequiredMixin, TemplateView):
-    # подписка отписка на блоги пользователей
+    # подписка на блоги пользователей
     model = BlogPosts
     context_object_name = "subsc"
     template_name = 'blogs/subscribe.html'
@@ -63,6 +65,7 @@ class SubscribeListView(LoginRequiredMixin, TemplateView):
         return render(request, 'blogs/subscribe.html')
 
 class UnSubscribeListView(LoginRequiredMixin, TemplateView):
+    # отписка на блоги пользователей
     model = BlogPosts
     login_url = 'unsubscribe'
     def get(self, request):
@@ -80,6 +83,7 @@ class UnSubscribeListView(LoginRequiredMixin, TemplateView):
             for del_sub_fors in del_sub_for2:
                 if del_sub_fors != unsubscribe_idh:
                     result = result + ',' + del_sub_fors
+            print('result')
             print(result)
             BlogPosts.objects.select_related().filter(author_id=unsubscribe_id).update(subscribe=result)
 
