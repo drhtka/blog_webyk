@@ -43,8 +43,25 @@ class TapeListView(LoginRequiredMixin, ListView):
             test_list.append(test_likes['author_id'])
         list_entr = BlogPosts.objects.filter(author_id__in=list(test_list)).values_list('title', 'text', 'created', 'author__first_name', 'id', 'read_posts')
         print(list_entr)
+        tmp_array = []
+        for list_entrs in list_entr:
+            #print(list_entrs[5].find(str(ug)))
+            #print(list_entrs[5])
+            #tmp_array.append(list_entrs)# ubiraem query set
+            if list_entrs[5].find(str(ug)) == -1:
+                print('ne prochitano')
+                tmp_two = list_entrs
+                tmp_three = [tmp_two, 'ne_prochitano']
+                tmp_array.append(tmp_three)
+            else:
+                tmp_two = list_entrs
+                tmp_three = [tmp_two, 'prochitano']
+                tmp_array.append(tmp_three)
+                print(tmp_three)
+                print('prochitano')
+            print(tmp_array)
 
-        return render(request, 'blogs/tapelist.html', {'list_entr': list_entr})
+        return render(request, 'blogs/tapelist.html', {'list_entr': list_entr, 'list_entr2': tmp_array})
 
 class SubscribeListView(LoginRequiredMixin, TemplateView):
     # подписка на блоги пользователей

@@ -16,27 +16,37 @@
     <p><a href="http://127.0.0.1:8000/">Главная</a></p>
     <p><a href="http://127.0.0.1:8000/list/">Мой блог</a></p>
 
-        {% for list in list_entr %}
+       {% comment %} {% for list in list_entr %}
             <h3>Заголовок: {{ list.0}}</h3>
             <p> Текст: {{ list.1}}</p>
             <p> Создан: {{ list.2}}</p>
             <p> Автор: {{ list.3}}</p>
             <span>прочитатать?: </span><a href="/readpost?post={{ list.4 }}&id={{ request.user.id }}"><input type="checkbox" name="idd" value="прочитано"></a></p>
             {% comment %}<p>{{ list.5|split:"," }}</p><p><input type="submit" value="прочитано"></p><br>{% endcomment %}
-                 <p>{{ list.5|split:", "}}</p>
+                 {% comment %}<p>{{ list.5|split:", "}}</p>
            {% for listt in list.5 %}
 
-         {% if listt == request.user.id %}
-         <h3>авторизированный</h3>
-             {% else %}
-              <h4>прочитано {{ request.user.first_name }}</h4>
-
-         {% endif %}
                  {% endfor %}
+        {% endfor %}{% e %}{% endcomment %}
+
+
+            {% for list in list_entr2 %}
+            <h3>Заголовок: {{ list.0.0 }}</h3>
+            <p> Текст: {{ list.0.1}}</p>
+            <p> Создан: {{ list.0.2}}</p>
+            <p> Автор: {{ list.0.3}}</p>
+            <span>прочитатать?: </span><a href="/readpost?post={{ list.0.4 }}&id={{ request.user.id }}"><input type="checkbox" name="idd" value="прочитано"></a></p>
+            {% comment %}<p>{{ list.5|split:"," }}</p><p><input type="submit" value="прочитано"></p><br>{% endcomment %}
+                 <p>{{ list.1 }}</p>
+
         {% endfor %}
+
 
 {% endblock %}
 {% comment %}
+
+
+
                 {{ listt.find(request.user.id) }}
                 {% if listt == request.user.id %}
                     <p><input type="submit" value="прочитано"></p>
