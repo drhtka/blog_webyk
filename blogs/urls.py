@@ -3,7 +3,7 @@
 # -*- coding: utf-8 -*-
 
 from django.conf.urls import url, include
-from blogs.views import PostsListView, SubscribeListView, TapeListView, UnSubscribeListView, ReadPostTemplView #, SendPost
+from blogs.views import PostsListView, SubscribeListView, TapeListView, UnSubscribeListView, ReadPostTemplView#, SendPost
 #from blogs.feeds import LatestPostFeed
 
 

@@ -8,6 +8,7 @@ from django.views.generic.edit import CreateView
 from blogs.forms import BlogPostsForms
 from blogs.models import BlogPosts
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.mail import send_mail
 
 class IndexTemplateView(LoginRequiredMixin, TemplateView):
     #  стартовая траница со всами постами всех пользователей
@@ -45,22 +46,18 @@ class TapeListView(LoginRequiredMixin, ListView):
         print(list_entr)
         tmp_array = []
         for list_entrs in list_entr:
-            #print(list_entrs[5].find(str(ug)))
-            #print(list_entrs[5])
-            #tmp_array.append(list_entrs)# ubiraem query set
             if list_entrs[5].find(str(ug)) == -1:
                 print('ne prochitano')
                 tmp_two = list_entrs
-                tmp_three = [tmp_two, 'ne_prochitano']
+                tmp_three = [tmp_two, 'не прочитано']
                 tmp_array.append(tmp_three)
             else:
                 tmp_two = list_entrs
-                tmp_three = [tmp_two, 'prochitano']
+                tmp_three = [tmp_two, 'прочитано']
                 tmp_array.append(tmp_three)
                 print(tmp_three)
                 print('prochitano')
             print(tmp_array)
-
         return render(request, 'blogs/tapelist.html', {'list_entr': list_entr, 'list_entr2': tmp_array})
 
 class SubscribeListView(LoginRequiredMixin, TemplateView):
@@ -74,58 +71,56 @@ class SubscribeListView(LoginRequiredMixin, TemplateView):
         #print('hello')
         subscribe_idd = request.GET.get('idd')
         subscribe_id = int(request.GET.get('id'))
-
         test_all=BlogPosts.objects.filter(author_id=subscribe_id).values('subscribe')
         temp_subs = test_all[0]['subscribe']
         temp_subs = temp_subs + ',' + subscribe_idd
         BlogPosts.objects.select_related().filter(author_id=subscribe_id).update(subscribe=temp_subs)
+
+        send_mail('тема сообщения', 'текст сообщения.', 'drhtka@gmail.com', ['tinezz99_79@mail.ru'], fail_silently=False)
+
         return render(request, 'blogs/subscribe.html')
 
 class UnSubscribeListView(LoginRequiredMixin, TemplateView):
-    # отписка на блоги пользователей
+    # отписка от блогов пользователей
     model = BlogPosts
     login_url = 'unsubscribe'
     def get(self, request):
         unsubscribe_idh = request.GET.get('iddu')# авториз юзер
         unsubscribe_id = request.GET.get('idu') # автор поста
         unsub_users = BlogPosts.objects.filter(author_id=unsubscribe_id).values('subscribe')
-
         for unsub_user in unsub_users:
             del_sub_for = unsub_user['subscribe']
-            print(del_sub_for)
-            print(unsub_user)
-            print('subscribe')
             del_sub_for2 = del_sub_for.split(',')
             result = ''
             for del_sub_fors in del_sub_for2:
                 if del_sub_fors != unsubscribe_idh:
                     result = result + ',' + del_sub_fors
-            print('result')
-            print(result)
             BlogPosts.objects.select_related().filter(author_id=unsubscribe_id).update(subscribe=result)
+
+        unsub_users2 = BlogPosts.objects.filter(author_id=unsubscribe_id).values('read_posts')
+        for unsub_user in unsub_users2:
+            del_sub_for = unsub_user['read_posts']
+            del_sub_for3 = del_sub_for.split(',')
+            result = ''
+            for del_sub_fors in del_sub_for3:
+                if del_sub_fors != unsubscribe_idh:
+                    result = result + ',' + del_sub_fors
+            BlogPosts.objects.select_related().filter(author_id=unsubscribe_id).update(read_posts=result)
 
         return render(request, 'blogs/unsubscribe.html')
 
 class ReadPostTemplView(LoginRequiredMixin, TemplateView):
+    # пометка о прочитанности
     model = BlogPosts
     login_url = 'readpost'
-
     def get(self, request):
         id_request_user = request.GET.get('id')# авториз юзер
         id_request_post = request.GET.get('post')  # номер поста который помечаем
 
         read_post = BlogPosts.objects.filter(id=id_request_post).values('read_posts')
-        print('11111')
         result2 = ''
-        #for unsub_user in unsub_users:
-        #    del_sub_for = unsub_user['read_posts']
-        print(read_post)
-        #update_read_posts = read_post[0]['read_posts'].split(',')
-        #print(update_read_posts)
         result2 = read_post[0]['read_posts'] + ',' + id_request_user
-        #BlogPosts.objects.select_related().filter(id=id_request_post).update(read_posts=result2)
         print_read=BlogPosts.objects.select_related().filter(id=id_request_post).update(read_posts=result2)
-        print(print_read)
         return redirect('/tapelist')
 
 """class SendPost(CreateView):
@@ -144,8 +139,7 @@ class ReadPostTemplView(LoginRequiredMixin, TemplateView):
 
      print('uns_test_uns')   
         print('uns_test')
-        print(unsubscribe_idd)
-        print(request.GET)
+
 
 
 print('req')
@@ -154,6 +148,7 @@ print('req')
         for object in subs:
             object.author = False
             print(object)
-            object.save() 
+            object.save()
+            pass"""
         #context={"subs":subs}
-        return redirect(request, 'blogs/subscribe.html')"""
+        #return redirect(request, 'blogs/subscribe.html')

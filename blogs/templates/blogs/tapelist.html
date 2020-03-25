@@ -35,12 +35,18 @@
             <p> Текст: {{ list.0.1}}</p>
             <p> Создан: {{ list.0.2}}</p>
             <p> Автор: {{ list.0.3}}</p>
-            <span>прочитатать?: </span><a href="/readpost?post={{ list.0.4 }}&id={{ request.user.id }}"><input type="checkbox" name="idd" value="прочитано"></a></p>
+
+                {% if list.1 != 'прочитано' %}
+                    <span>прочитатать?: </span>
+                <p>
+                <a href="/readpost?post={{ list.0.4 }}&id={{ request.user.id }}"><input type="checkbox" name="idd" value="прочитано"></a>
+                </p>
             {% comment %}<p>{{ list.5|split:"," }}</p><p><input type="submit" value="прочитано"></p><br>{% endcomment %}
                  <p>{{ list.1 }}</p>
-
-        {% endfor %}
-
+                {% else %}
+                    {{ list.1 }}
+                {% endif %}
+           {% endfor %}
 
 {% endblock %}
 {% comment %}
