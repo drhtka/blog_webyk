@@ -13,22 +13,10 @@
 {% endblock %}
 
 {% block content %}
-    <p><a href="http://127.0.0.1:8000/">Главная</a></p>
-    <p><a href="http://127.0.0.1:8000/list/">Мой блог</a></p>
 
-       {% comment %} {% for list in list_entr %}
-            <h3>Заголовок: {{ list.0}}</h3>
-            <p> Текст: {{ list.1}}</p>
-            <p> Создан: {{ list.2}}</p>
-            <p> Автор: {{ list.3}}</p>
-            <span>прочитатать?: </span><a href="/readpost?post={{ list.4 }}&id={{ request.user.id }}"><input type="checkbox" name="idd" value="прочитано"></a></p>
-            {% comment %}<p>{{ list.5|split:"," }}</p><p><input type="submit" value="прочитано"></p><br>{% endcomment %}
-                 {% comment %}<p>{{ list.5|split:", "}}</p>
-           {% for listt in list.5 %}
-
-                 {% endfor %}
-        {% endfor %}{% e %}{% endcomment %}
-
+        <p><a href="{% url 'index' %}">Главная</a></p>
+    <p><a href="{% url 'blog_posts:list' %}">Мой блог</a></p>
+    <p><a href="{% url 'blog_posts:addpost' %}">Создать пост</a></p>
 
             {% for list in list_entr2 %}
             <h3>Заголовок: {{ list.0.0 }}</h3>

@@ -3,7 +3,7 @@
 # -*- coding: utf-8 -*-
 
 from django.conf.urls import url, include
-from blogs.views import PostsListView, SubscribeListView, TapeListView, UnSubscribeListView, ReadPostTemplView#, SendPost
+from blogs.views import PostsListView, SubscribeListView, TapeListView, UnSubscribeListView, ReadPostTemplView, AddPostView#, SendPost
 #from blogs.feeds import LatestPostFeed
 
 
@@ -12,9 +12,11 @@ from blogs.views import PostsListView, SubscribeListView, TapeListView, UnSubscr
 urlpatterns = [
     url('^list/', PostsListView.as_view(), name='list'),#<str:slug>/
     url(r'^subscribe', SubscribeListView.as_view(), name='subscribe'),
-    url(r'^tapelist', TapeListView.as_view(), name='subscribe'),
+    url(r'^tapelist', TapeListView.as_view(), name='tapelist'),
     url(r'^unsubscribe', UnSubscribeListView.as_view(), name='unsibscribe'),
     url(r'^readpost', ReadPostTemplView.as_view(), name='readpost'),
+    url(r'^addpost', AddPostView.as_view(), name='addpost'),
+
     #url(r'^sendpost', SendPost.as_view(), name='sendpost'),
 
 ]

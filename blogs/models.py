@@ -19,7 +19,7 @@ class BlogPosts(models.Model):
     title = models.CharField('Заголовок', max_length=100,)
     text = models.TextField('Текст статьи',)
     created = models.DateField('Дата создания', auto_now_add=True,)
-    status = models.CharField('Состояние', max_length=10, choices=STATUS_CHOICES, default='draft')
+    status = models.CharField('Состояние', max_length=10, choices=STATUS_CHOICES, default='published')
     subscribe = models.CharField('Подписан', max_length=30, null=True, blank=None, default=DEFAULT_SAMMICH)
     read_posts = models.CharField(max_length=255, null=True, blank=None)
 

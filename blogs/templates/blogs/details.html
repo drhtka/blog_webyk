@@ -11,29 +11,28 @@
 {% endblock %}
 
 {% block content %}
-        <p><a href="http://127.0.0.1:8000/">Главная</a></p>
+        <p><a href="{% url 'index' %}">Главная</a></p>
+    <p><a href="{% url 'blog_posts:tapelist' %}">Моя лента</a></p>
+    <p><a href="{% url 'blog_posts:addpost' %}">Создать пост</a></p>
 
-    <p><a href="http://127.0.0.1:8000/tapelist/">Моя лента</a></p>
 {% for pub in posts %}<br>
     <h3>Заголовок: {{ pub.title }}</h3>
     <h3>Автор: {{ pub.author }}</h3>
     <h4>дата публикации: {{ pub.created }}<br></h4>
      <p> Текст: {{ pub.text|truncatewords:10 }}<br>
     </p>
-{% endfor %}
+
     {% if sent %}
     <h1>E-mail succesfully sent</h1>
-    <p>"{{ post.title }}" был успешно отправлен по электронной почте</p>
+    <p>"{{ pub.title }}" был успешно отправлен по электронной почте</p>
 
     {%  else %}
-    <h1>Поделиться"{{ post.title }}" на e-mail</h1>
-        <form action="" method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <input type="submit" value="поделиться ">
+    <h5>Поделиться {{ pub.title }} на e-mail</h5>
+        <form action="/addpost" method="get">
+        <input type="submit" value="создать пост ">
     </form>
      {% endif %}
-
+{% endfor %}
   {% endblock %}
 
 

@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
+from django.urls import reverse
+from django.utils import timezone
 from django.views.generic import ListView, TemplateView, View
 from django.views.generic.edit import CreateView
 #from django.views.generic.base import View
@@ -15,9 +17,7 @@ class IndexTemplateView(LoginRequiredMixin, TemplateView):
     def get(self, request):
         template_name = 'blogs/index.html'
         all_posts = BlogPosts.objects.all()
-        u = self.request.user
-        print(u)
-        print(all_posts)
+        #u = self.request.user
         context = {'all_posts': all_posts}
         return render(request, template_name, context)
 
@@ -32,6 +32,20 @@ class PostsListView(LoginRequiredMixin, ListView):
         u = self.request.user
         qs = super().get_queryset()
         return qs.filter(author=u)
+
+class AddPostView(LoginRequiredMixin, TemplateView):
+    template_name = 'blogs/addpost.html'
+    form_class = BlogPostsForms
+    #login_url = 'addpost'
+
+    def get(self, request):
+        #form = BlogPostsForms
+        #send_ids = request.GET.get('ids')
+        print('print')
+        form = BlogPostsForms
+
+        return render(request, 'blogs/addpost.html', {'form': form})
+
 
 class TapeListView(LoginRequiredMixin, ListView):
 
@@ -55,9 +69,7 @@ class TapeListView(LoginRequiredMixin, ListView):
                 tmp_two = list_entrs
                 tmp_three = [tmp_two, 'прочитано']
                 tmp_array.append(tmp_three)
-                print(tmp_three)
-                print('prochitano')
-            print(tmp_array)
+
         return render(request, 'blogs/tapelist.html', {'list_entr': list_entr, 'list_entr2': tmp_array})
 
 class SubscribeListView(LoginRequiredMixin, TemplateView):
@@ -76,7 +88,6 @@ class SubscribeListView(LoginRequiredMixin, TemplateView):
         temp_subs = temp_subs + ',' + subscribe_idd
         BlogPosts.objects.select_related().filter(author_id=subscribe_id).update(subscribe=temp_subs)
 
-        send_mail('тема сообщения', 'текст сообщения.', 'drhtka@gmail.com', ['tinezz99_79@mail.ru'], fail_silently=False)
 
         return render(request, 'blogs/subscribe.html')
 
@@ -149,6 +160,20 @@ print('req')
             object.author = False
             print(object)
             object.save()
-            pass"""
+            pass
+            
+            
+            
+            #if request.method == "POST":
+            form = BlogPostsForms(request.POST)
+            if form.is_valid():
+                post = form.save(commit=False)
+                post.author = request.user
+                post.published_date = timezone.now()
+                post.save()
+                return redirect("/")
+        else:
+            
+            """
         #context={"subs":subs}
         #return redirect(request, 'blogs/subscribe.html')
