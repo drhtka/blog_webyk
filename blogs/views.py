@@ -41,9 +41,15 @@ class AddPostView(LoginRequiredMixin, TemplateView):
     def get(self, request):
         #form = BlogPostsForms
         #send_ids = request.GET.get('ids')
+        title_send = request.GET.get('title')
+        text_send = request.GET.get('text')
+        author_send = self.request.user.id #request.GET.get('id')
+        print(title_send, text_send, author_send)
         print('print')
+        send_test = BlogPosts(title=title_send, text=text_send, author_id=author_send)
+        #print(send_test)
+        send_test.save()
         form = BlogPostsForms
-
         return render(request, 'blogs/addpost.html', {'form': form})
 
 
@@ -57,11 +63,12 @@ class TapeListView(LoginRequiredMixin, ListView):
         for test_likes in test_like:
             test_list.append(test_likes['author_id'])
         list_entr = BlogPosts.objects.filter(author_id__in=list(test_list)).values_list('title', 'text', 'created', 'author__first_name', 'id', 'read_posts')
-        print(list_entr)
+        #print(list_entr)
         tmp_array = []
         for list_entrs in list_entr:
+            print(list_entrs[5].find(str(ug)))
             if list_entrs[5].find(str(ug)) == -1:
-                print('ne prochitano')
+                #print('ne prochitano')
                 tmp_two = list_entrs
                 tmp_three = [tmp_two, 'не прочитано']
                 tmp_array.append(tmp_three)
@@ -125,7 +132,10 @@ class ReadPostTemplView(LoginRequiredMixin, TemplateView):
     model = BlogPosts
     login_url = 'readpost'
     def get(self, request):
+        print('id_request_user')
         id_request_user = request.GET.get('id')# авториз юзер
+        print('id_request_user')
+        print(id_request_user)
         id_request_post = request.GET.get('post')  # номер поста который помечаем
 
         read_post = BlogPosts.objects.filter(id=id_request_post).values('read_posts')

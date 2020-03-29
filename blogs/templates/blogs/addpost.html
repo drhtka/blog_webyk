@@ -1,9 +1,9 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}addpost{{ posts.title }}{% endblock %}
+{% block title %}addpost{% endblock %}
 
-rrrrrrrrrrrrrrrrrr
+
 {% block side_bar %}
         {% if request.user.is_authenticated %}
 
@@ -25,10 +25,12 @@ rrrrrrrrrrrrrrrrrr
 
 
     <h5>Поделиться на e-mail</h5>
-    <form action="/addpost" method="get" name="ids">
+    <form action="/addpost?title={{ sh.0 }}&text={{ sh.1 }}" method="get" name="ids">
 
             {% csrf_token %}
         {{ form.as_p }}
             <input type="submit" value="создать пост ">
     </form>
             {% endblock content %}
+
+{% comment %} &author={{ request.user }} <input type="hidden" value="{{ user.id }}" name="author">{% endcomment %}
