@@ -13,7 +13,7 @@
 {% block content %}
         <p><a href="{% url 'index' %}">Главная</a></p>
     <p><a href="{% url 'blog_posts:tapelist' %}">Моя лента</a></p>
-    <p><a href="{% url 'blog_posts:addpost' %}">Создать пост</a></p>
+    <p><a href="{% url 'blog_posts:addtest' %}">Создать пост</a></p>
 
 {% for pub in posts %}<br>
     <h3>Заголовок: {{ pub.title }}</h3>
@@ -28,11 +28,14 @@
 
     {%  else %}
     <h5>Поделиться {{ pub.title }} на e-mail</h5>
-        <form action="/addpost" method="get">
-        <input type="submit" value="создать пост ">
-    </form>
+
      {% endif %}
 {% endfor %}
-  {% endblock %}
+    <form action="/addpostcreate" method="get">
+        <input type="submit" value="создать пост ">
+            {% csrf_token %}
+        {{ form.as_p }}
+    </form>
+  {% endblock content%}
 
 

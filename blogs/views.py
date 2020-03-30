@@ -33,14 +33,28 @@ class PostsListView(LoginRequiredMixin, ListView):
         qs = super().get_queryset()
         return qs.filter(author=u)
 
+class AddTestView(LoginRequiredMixin, TemplateView):
+    def get(self, request):
+        #print('hello ytest')
+        #form = BlogPostsForms
+        return render(request, 'blogs/addpost.html')
+
+class AddPostCreateView(LoginRequiredMixin, TemplateView):
+    def get(self, request):
+        print('123')
+        return render(request, 'blogs/addpost.html')
+
 class AddPostView(LoginRequiredMixin, TemplateView):
-    template_name = 'blogs/addpost.html'
-    form_class = BlogPostsForms
-    #login_url = 'addpost'
+
+    #def post(self, request):
+        #print('hulio')
+        #form = BlogPostsForms
+        #return render(request, 'blogs/addpost.html')
 
     def get(self, request):
         #form = BlogPostsForms
         #send_ids = request.GET.get('ids')
+        #form = BlogPostsForms
         title_send = request.GET.get('title')
         text_send = request.GET.get('text')
         author_send = self.request.user.id #request.GET.get('id')
@@ -48,9 +62,12 @@ class AddPostView(LoginRequiredMixin, TemplateView):
         print('print')
         send_test = BlogPosts(title=title_send, text=text_send, author_id=author_send)
         #print(send_test)
+        #send_test = send_test.save(commit=False)
         send_test.save()
-        form = BlogPostsForms
-        return render(request, 'blogs/addpost.html', {'form': form})
+        message = 'text'
+        subject = 'Новый пост'
+        send_mail(subject, message, 'drhtka@gmail.com', ['tinez99@ukr.net'], fail_silently=False)
+        return redirect('/')
 
 
 class TapeListView(LoginRequiredMixin, ListView):
