@@ -34,8 +34,8 @@ class BlogPosts(models.Model):
         #return "Посты блога %s" % self.title
         return self.title
 
-    #def get_absolute_url(self):  # new
-        #return reverse('blog_posts:list', kwargs={'pk': str(self.id)})
+    #def get_tapelist_url(self):  # new
+    #    return reverse('blog_posts:tapelist')
         #return reverse('blog_posts:list', args=[str(self.pk)])
         #reverse('blog_posts:list', kwargs = {'id': self.id})
 #class ReadPosts(models.Model):

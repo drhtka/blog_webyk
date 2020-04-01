@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}addpost{% endblock %}
+{% block title %}ditailpost{% endblock %}
 
 
 {% block side_bar %}
@@ -19,20 +19,10 @@
               <h3> Ваш логин: {{ user.username }}</h3>
                 {% endif %}
             {% block content %}
-    <p><a href="{% url 'index' %}">Главная</a></p>
+                    <p><a href="{% url 'index' %}">Главная</a></p>
      <p><a href="{% url 'blog_posts:tapelist' %}">Моя лента</a></p>
      <p><a href="{% url 'blog_posts:list' %}">Мой блог</a></p>
 
-    <h5>Поделиться на e-mail</h5>
-    <form action="/addpost" method="get">
-
-        <p><input type="text" name="title"></p>
-        <p><textarea name="text"></textarea></p>
-
-        <input type="submit" value="создать пост ">
-    </form>
-            {% endblock content %}
-
-{% comment %}
-action="/addpost?title={{ sh.0 }}&text={{ sh.1 }}" method="get" name="ids"
-&author={{ request.user }} <input type="hidden" value="{{ user.id }}" name="author">{% endcomment %}
+                <p>{{ data_post.0.title }}</p>
+                {{ data_post.0.text }}
+            {% endblock %}

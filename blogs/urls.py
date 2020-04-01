@@ -3,7 +3,9 @@
 # -*- coding: utf-8 -*-
 
 from django.conf.urls import url, include
-from blogs.views import PostsListView, SubscribeListView, TapeListView, UnSubscribeListView, ReadPostTemplView, AddPostView, AddPostCreateView, AddTestView#, SendPost
+from blogs.views import PostsListView, SubscribeListView, \
+    TapeListView, UnSubscribeListView, ReadPostTemplView, \
+    AddPostView, AddTestView, DitailPostView#, SendPost
 #from blogs.feeds import LatestPostFeed
 
 
@@ -16,8 +18,8 @@ urlpatterns = [
     url(r'^unsubscribe', UnSubscribeListView.as_view(), name='unsibscribe'),
     url(r'^readpost', ReadPostTemplView.as_view(), name='readpost'),
     url(r'^addpost', AddPostView.as_view(), name='addpost'),
-    url(r'^addpostcreate', AddPostCreateView.as_view(), name='addpostcreate'),
     url(r'^addtest', AddTestView.as_view(), name='addtest'),
+    url(r'^ditailpost', DitailPostView.as_view(), name='ditailpost'),
     #url(r'^sendpost', SendPost.as_view(), name='sendpost'),
 
 ]
