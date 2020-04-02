@@ -19,10 +19,12 @@
               <h3> Ваш логин: {{ user.username }}</h3>
                 {% endif %}
             {% block content %}
+                111
                     <p><a href="{% url 'index' %}">Главная</a></p>
      <p><a href="{% url 'blog_posts:tapelist' %}">Моя лента</a></p>
      <p><a href="{% url 'blog_posts:list' %}">Мой блог</a></p>
 
                 <p>{{ data_post.0.title }}</p>
-                {{ data_post.0.text }}
+                <p>{{ data_post.0.text }}</p>
+                {{ data_post.0.created }}
             {% endblock %}

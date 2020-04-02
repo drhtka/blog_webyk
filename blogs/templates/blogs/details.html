@@ -18,27 +18,29 @@
 
 
 {% for pub in posts %}<br>
+    <p> Номер: {{ pub.id }}<br>
+    </p>
     <h3>Заголовок: {{ pub.title }}</h3>
     <h3>Автор: {{ pub.author }}</h3>
     <h4>дата публикации: {{ pub.created }}<br></h4>
      <p> Текст: {{ pub.text|truncatewords:10 }}<br>
     </p>
-    <p><a href="{% url "blog_posts:ditailpost" %}?id="{{ pub.id }}>читать диталее</a></p>
+    <p><a href="{% url "blog_posts:detailpost" %}?idd={{ pub.id }}">читать диталее</a></p>
 
-    {% if sent %}
+    {% comment %}{% if sent %}
     <h1>E-mail succesfully sent</h1>
     <p>"{{ pub.title }}" был успешно отправлен по электронной почте</p>
 
     {%  else %}
     <h5>Поделиться {{ pub.title }} на e-mail</h5>
 
-     {% endif %}
+     {% endif %}{% endcomment %}
 {% endfor %}
-    <form action="/addpostcreate" method="get">
+    {% comment %}<form action="/addpostcreate" method="get">
         <input type="submit" value="создать пост ">
             {% csrf_token %}
         {{ form.as_p }}
-    </form>
+    </form>{% endcomment %}
   {% endblock content%}
 
 

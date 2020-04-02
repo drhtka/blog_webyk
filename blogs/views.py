@@ -26,12 +26,10 @@ class IndexTemplateView(LoginRequiredMixin, TemplateView):
 class PostsListView(LoginRequiredMixin, ListView):
     #  страница блога зарегестрированного пользователя
     model = BlogPosts
-    fields = ('id')
     # print(fields)
     context_object_name = "posts"
     template_name = 'blogs/details.html'
     login_url = 'login'
-
     # print('context_object_name')
     # print(context_object_name)
 
@@ -160,12 +158,12 @@ class ReadPostTemplView(LoginRequiredMixin, TemplateView):
         return redirect('/tapelist')
 
 
-class DitailPostView(LoginRequiredMixin, TemplateView):
+class DetailPostView(LoginRequiredMixin, View):
+
     def get(self, request):
-        id_post = request.GET.get('id')
-        data_post = BlogPosts.objects.filter(id=id_post).values('title', 'text')
-        print(data_post)
-        return render(request, 'blogs/ditailpost.html', {'data_post': data_post})
+        id_post = request.GET.get('idd')
+        data_post = BlogPosts.objects.filter(id=id_post).values('title', 'text', 'created')
+        return render(request, 'blogs/detailpost.html', {'data_post': data_post})
 
 
 """class SendPost(CreateView):
