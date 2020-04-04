@@ -4,7 +4,7 @@
 {% block title %}Все посты{{ posts.title }}{% endblock %}
 
 {% block side_bar %}
-
+<h4><p><font color="green">Главная</font></p></h4>
     {% if request.user.is_authenticated %}
 
              <a href="{% url "logout" %}">Выйти</a>

@@ -1,9 +1,9 @@
 {% extends 'base.html' %}
 
-{% block title %}Мои посты{{ posts.title }}{% endblock %}
+{% block title %}Мой блог{{ posts.title }}{% endblock %}
 {% block side_bar %}
+    <h4><p><font color="green">Мой блог</font></p></h4>
     {% if request.user.is_authenticated %}
-
         <h3><a href="{% url "logout" %}">Выйти</a></h3>
         {% else %}
              <li><a href="{% url "login" %}">Войти</a></li><br>
@@ -11,6 +11,7 @@
 {% endblock %}
 
 {% block content %}
+
         <p><a href="{% url 'index' %}">Главная</a></p>
     <p><a href="{% url 'blog_posts:tapelist' %}">Моя лента</a></p>
     <p><a href="{% url 'blog_posts:addtest' %}">Создать пост</a></p>

@@ -5,6 +5,7 @@
 
 
 {% block side_bar %}
+    <h4><p><font color="green">страница создания поста и отправка</font> </p></h4>
         {% if request.user.is_authenticated %}
 
              <a href="{% url "logout" %}">Выйти</a>

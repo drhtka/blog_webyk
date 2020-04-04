@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
+from django.contrib.auth.models import User
 from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpRequest
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.utils import timezone
@@ -53,9 +54,24 @@ class AddPostView(LoginRequiredMixin, View):
         author_send = self.request.user.id  # request.GET.get('id')
         send_test = BlogPosts(title=title_send, text=text_send, author_id=author_send)
         send_test.save()
-        subject = 'Новый пост'
-        message = 'text'
-        send_mail(subject, message, 'drhtka@gmail.com', ['tinez99@ukr.net'], fail_silently=False)
+        print('send_test')
+        print(send_test.id)
+        print(send_test.subscribe)
+
+        #for unsub_user in unsub_users:
+        #    del_sub_for = unsub_user['subscribe']
+            #    del_sub_for2 = del_sub_for.split(',')
+        send_users = '1,2'.split(',')
+        #temp_subs = test_all[0]['subscribe']
+        for send_users_s in send_users:
+            send_user_sub = User.objects.filter(id__contains=send_users_s).values('email')
+            print(send_user_sub)
+            subject = 'Новый пост'
+            link = HttpRequest.build_absolute_uri(request, "/detailpost?idd=")
+            my_href = link + str(send_test.id)
+            message = 'Читать:' + my_href
+            send_mail(subject, message, 'drhtka@gmail.com', ['tinezz99_79@mail.ru'], fail_silently=False)
+
         return redirect('/')
 
 
@@ -159,7 +175,7 @@ class ReadPostTemplView(LoginRequiredMixin, TemplateView):
 
 
 class DetailPostView(LoginRequiredMixin, View):
-
+    #пост детально
     def get(self, request):
         id_post = request.GET.get('idd')
         data_post = BlogPosts.objects.filter(id=id_post).values('title', 'text', 'created')
