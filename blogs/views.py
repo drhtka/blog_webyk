@@ -52,25 +52,25 @@ class AddPostView(LoginRequiredMixin, View):
         title_send = request.GET.get('title')
         text_send = request.GET.get('text')
         author_send = self.request.user.id  # request.GET.get('id')
-        send_test = BlogPosts(title=title_send, text=text_send, author_id=author_send)
+        searc_subs = BlogPosts.objects.filter(author_id=author_send).values('subscribe')# подписанные на первый пост пользователя
+        print('searc_subs')
+        print(searc_subs[0]['subscribe'])
+        send_test = BlogPosts(title=title_send, text=text_send, author_id=author_send, subscribe=searc_subs[0]['subscribe'] )
         send_test.save()
         print('send_test')
         print(send_test.id)
-        print(send_test.subscribe)
-
-        #for unsub_user in unsub_users:
-        #    del_sub_for = unsub_user['subscribe']
-            #    del_sub_for2 = del_sub_for.split(',')
-        send_users = '1,2'.split(',')
-        #temp_subs = test_all[0]['subscribe']
+        send_users = searc_subs[0]['subscribe'].split(',')
         for send_users_s in send_users:
             send_user_sub = User.objects.filter(id__contains=send_users_s).values('email')
+            print('send_user_sub')
             print(send_user_sub)
-            subject = 'Новый пост'
-            link = HttpRequest.build_absolute_uri(request, "/detailpost?idd=")
-            my_href = link + str(send_test.id)
-            message = 'Читать:' + my_href
-            send_mail(subject, message, 'drhtka@gmail.com', ['tinezz99_79@mail.ru'], fail_silently=False)
+            for send_user_subs in send_user_sub:
+                ss = send_user_subs['email']
+                subject = 'Новый пост'
+                link = HttpRequest.build_absolute_uri(request, "/detailpost?idd=")
+                my_href = link + str(send_test.id)
+                message = 'Читать:' + my_href
+                send_mail(subject, message, 'drhtka@gmail.com', [ss], fail_silently=False)
 
         return redirect('/')
 
